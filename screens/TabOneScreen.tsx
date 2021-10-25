@@ -8,22 +8,17 @@ import EditScreenInfo from '../components/EditScreenInfo';
 import { Text, View } from '../components/Themed';
 import { RootTabScreenProps } from '../types';
 
-import * as Clarifai from "clarifai";
-
 import * as ImagePicker from "expo-image-picker";
 import * as ImageManipulator from "expo-image-manipulator";
+import ClarifaiView from '../components/ClarifaiView';
+import { ImageResult } from 'expo-image-manipulator';
 //import { CLARIFAI_API_KEY } from '@env';
 
 export default function TabOneScreen({ navigation }: RootTabScreenProps<'TabOne'>) {
 
-  const [predictions, setPredictions] = useState(null);
-  const [imageToAnalyze, setImageToAnalyze] = useState(null);
+  const [imageToAnalyze, setImageToAnalyze] = useState<any|null>(null);
+  const [imageResponse, setImageResponse] = useState<ImageResult|null>(null);
 
-  //Clarifai API Setup
-  const clarifaiApp = new Clarifai.App({
-    apiKey:  /*CLARIFAI_API_KEY*/,
-  });
-  process.nextTick = setImmediate;
 
   //Gets users permission to access camera
   useEffect(() => {
@@ -39,21 +34,6 @@ export default function TabOneScreen({ navigation }: RootTabScreenProps<'TabOne'
     };
     getPermissionAsync();
   }, []);
-
-  //Clarifai API Call
-  const clarifaiDetectObjectsAsync = async (source: string | undefined) => {
-    try {
-      const newPredictions = await clarifaiApp.models.predict(
-        { id: Clarifai.FOOD_MODEL },
-        { base64: source },
-        { maxConcepts: 10, minValue: 0.4 }
-      );
-      // console.log(newPredictions.outputs[0].data.concepts);
-      setPredictions(newPredictions.outputs[0].data.concepts);
-    } catch (error) {
-      console.log("Exception Error: ", error);
-    }
-  };
 
   //Image Selector
   const selectImageAsync = async () => {
@@ -75,12 +55,10 @@ export default function TabOneScreen({ navigation }: RootTabScreenProps<'TabOne'
             base64: true,
           }
         );
+        setImageResponse(manipResponse);
 
         const source = { uri: manipResponse.uri };
         setImageToAnalyze(source);
-        setPredictions(null);
-        // send base64 version to clarifai
-        await clarifaiDetectObjectsAsync(manipResponse.base64);
       }
     } catch (error) {
       console.log(error);
@@ -121,37 +99,13 @@ export default function TabOneScreen({ navigation }: RootTabScreenProps<'TabOne'
               <Text style={styles.transparentText}>Tap to choose image</Text>
             )}
           </TouchableOpacity>
-          <View style={styles.predictionWrapper}>
-            {imageToAnalyze && (
-              <Text style={styles.text}>
-                Predictions: {predictions ? "" : "Predicting..."}
-              </Text>
-            )}
-            {predictions &&
-              predictions?.length &&
-              console.log("=== Detect foods predictions: ===")}
-
-            {predictions &&
-              predictions.map(
-                (
-                  p: { name: React.ReactNode; value: React.ReactNode },
-                  index: string | number | null | undefined
-                ) => {
-                  console.log(`${index} ${p.name}: ${p.value}`);
-                  return (
-                    <Text key={index} style={styles.text}>
-                      {p.name}: {parseFloat(p.value).toFixed(3)}
-                    </Text>
-                  );
-                }
-              )}
-          </View>
+          {imageResponse ? <ClarifaiView imageResponse = {imageResponse.base64}/> : <View></View>}
         </View>
       </ScrollView>
     </View>
   );
 
-
+                
   /*return (
     <View style={styles.container}>
       <Text style={styles.title}>Tab One</Text>
