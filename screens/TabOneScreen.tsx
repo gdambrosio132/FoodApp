@@ -18,7 +18,7 @@ import {GetRequest} from '../components/FoodAPI'
 export default function TabOneScreen({ navigation }: RootTabScreenProps<'TabOne'>) {
 
   const [imageToAnalyze, setImageToAnalyze] = useState<any|null>(null);
-  const [imageResponse, setImageResponse] = useState<ImageResult|null>(null);
+  const [imageResponse, setImageResponse] = useState<string|undefined>(undefined);
 
 
   //Gets users permission to access camera
@@ -56,8 +56,7 @@ export default function TabOneScreen({ navigation }: RootTabScreenProps<'TabOne'
             base64: true,
           }
         );
-        setImageResponse(manipResponse);
-
+        setImageResponse(manipResponse.base64);
         const source = { uri: manipResponse.uri };
         setImageToAnalyze(source);
       }
@@ -79,7 +78,7 @@ export default function TabOneScreen({ navigation }: RootTabScreenProps<'TabOne'
 
           <TouchableOpacity
             style={styles.imageWrapper}
-            onPress={selectImageAsync}
+            onPress={() => selectImageAsync()}
           >
             {imageToAnalyze && (
               <View style={{ position: "relative" }}>
@@ -101,7 +100,7 @@ export default function TabOneScreen({ navigation }: RootTabScreenProps<'TabOne'
               <Text style={styles.transparentText}>Tap to choose image</Text>
             )}
           </TouchableOpacity>
-          {imageResponse ? <ClarifaiView imageResponse = {imageResponse.base64}/> : <View></View>}
+          {imageResponse ? <ClarifaiView imageResponse = {imageResponse}/> : <View></View>}
         </View>
       </ScrollView>
     </View>

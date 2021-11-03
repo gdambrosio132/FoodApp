@@ -10,7 +10,7 @@ class GetRequest extends React.Component {
     super(props);
 
     this.state = {
-      calories: null
+      calories: null,
     };
   }
 
@@ -30,7 +30,8 @@ class GetRequest extends React.Component {
         },
       })
       .then(response => response.json())
-      .then(data => this.setState({ calories: data.parsed[0].food.nutrients.ENERC_KCAL }))
+      .then(data => this.setState({ calories: data.parsed[0].food.nutrients.ENERC_KCAL})
+    )
       //.then(data => this.setState({ totalReactPackages: data.parsed.food}))
   }
 

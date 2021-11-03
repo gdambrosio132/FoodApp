@@ -12,31 +12,33 @@ import * as Clarifai from "clarifai";
 import * as ImagePicker from "expo-image-picker";
 import * as ImageManipulator from "expo-image-manipulator";
 import { GetRequest } from './FoodAPI';
+import * as KEYS from '../constants/APIKeys';
+import * as Urls from '../constants/Urls';
 
 //import { CLARIFAI_API_KEY } from '@env';
 const ClarifaiView = ({imageResponse} : {imageResponse:string|undefined}) => {
     const [predictions, setPredictions] = useState(null);
     const clarifaiApp = new Clarifai.App({
-        apiKey: "" /*CLARIFAI_API_KEY*/,
-      apiKey: "" /*CLARIFAI_API_KEY*/,
+        apiKey: KEYS.CLARIFAI_APP_KEY /*CLARIFAI_API_KEY*/,
     });
     process.nextTick = setImmediate;
+    const clarifaiDetectObjectsAsync = async (source: string | undefined) => {
+      try {
+        const newPredictions = await clarifaiApp.models.predict(
+          { id: Clarifai.FOOD_MODEL },
+          { base64: source },
+          { maxConcepts: 10, minValue: 0.4 }
+        );
+        setPredictions(newPredictions.outputs[0].data.concepts);
+      } catch (error) {
+        console.log("Exception Error: ", error);
+      }
+    };
+
+    useEffect(() => {  
+      clarifaiDetectObjectsAsync(imageResponse);
+    }, [imageResponse])
     
-      useEffect(() => {
-        const clarifaiDetectObjectsAsync = async (source: string | undefined) => {
-            try {
-              const newPredictions = await clarifaiApp.models.predict(
-                { id: Clarifai.FOOD_MODEL },
-                { base64: source },
-                { maxConcepts: 10, minValue: 0.4 }
-              );
-              setPredictions(newPredictions.outputs[0].data.concepts);
-            } catch (error) {
-              console.log("Exception Error: ", error);
-            }
-          };
-          clarifaiDetectObjectsAsync(imageResponse);
-      }, [])
     return (
         
         <View style={styles.predictionWrapper}>
