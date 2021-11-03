@@ -11,12 +11,14 @@ import * as Clarifai from "clarifai";
 
 import * as ImagePicker from "expo-image-picker";
 import * as ImageManipulator from "expo-image-manipulator";
+import { GetRequest } from './FoodAPI';
 
 //import { CLARIFAI_API_KEY } from '@env';
 const ClarifaiView = ({imageResponse} : {imageResponse:string|undefined}) => {
     const [predictions, setPredictions] = useState(null);
     const clarifaiApp = new Clarifai.App({
         apiKey: "" /*CLARIFAI_API_KEY*/,
+      apiKey: "" /*CLARIFAI_API_KEY*/,
     });
     process.nextTick = setImmediate;
     
@@ -54,9 +56,11 @@ const ClarifaiView = ({imageResponse} : {imageResponse:string|undefined}) => {
                   index: string | number | null | undefined
                 ) => {
                   console.log(`${index} ${p.name}: ${p.value}`);
+                  
                   return (
                     <Text key={index} style={styles.text}>
-                      {p.name}: {parseFloat(p.value).toFixed(3)}
+                      {p.name}: {parseFloat(p.value).toFixed(3)}: 
+                      Calories - <GetRequest food={p.name} />
                     </Text>
                   );
                 }
