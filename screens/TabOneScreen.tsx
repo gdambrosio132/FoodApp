@@ -12,7 +12,6 @@ import * as ImagePicker from "expo-image-picker";
 import * as ImageManipulator from "expo-image-manipulator";
 import ClarifaiView from '../components/ClarifaiView';
 import { ImageResult } from 'expo-image-manipulator';
-//import { CLARIFAI_API_KEY } from '@env';
 import {GetRequest} from '../components/FoodAPI'
 
 export default function TabOneScreen({ navigation }: RootTabScreenProps<'TabOne'>) {

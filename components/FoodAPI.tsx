@@ -39,7 +39,7 @@ class GetRequest extends React.Component {
   render() {
     const { calories } = this.state;
     return (
-      <Text>{calories}</Text>
+      <Text>{calories? calories : "unknown"}</Text>
     );
   }
 }
