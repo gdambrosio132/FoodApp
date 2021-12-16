@@ -1,10 +1,10 @@
 import React from "react";
 import { Text, TouchableOpacity } from "react-native";
 import { StyleSheet } from "react-native";
-function Button({children} : {children:string}) {
+function Button({text,onClick}) {
   return (
-    <TouchableOpacity style={[styles.button]}>
-      <Text>Save Calories</Text>
+    <TouchableOpacity onPress={onClick} style={[styles.button]}>
+      <Text style = {styles.text}>{text}</Text>
     </TouchableOpacity>
   );
 }
@@ -18,7 +18,10 @@ const styles = StyleSheet.create({
       paddingHorizontal: 32,
       borderRadius: 4,
       elevation: 3,
-      backgroundColor: 'black',
+      backgroundColor: 'blue',
     },
-
+    text:{
+      color : "white",
+      fontSize : 32
+    }
   });

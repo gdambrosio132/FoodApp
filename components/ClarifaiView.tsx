@@ -1,3 +1,4 @@
+import { types } from "@babel/core";
 import * as Clarifai from "clarifai";
 import React, { useEffect, useState } from 'react';
 import { AsyncStorage, StyleSheet, TouchableOpacity } from 'react-native';
@@ -74,14 +75,14 @@ const ClarifaiView = ({ imageResponse }: { imageResponse: string | undefined }) 
     }
     let calorie =  await componentDidMount(value)
 
-    await foodList.push({name: value, calorie})
+    await foodList.push({id: Math.random()*999999, name: value, calorie})
     console.log(foodList)
     console.log("onItemTouch Calorie: ")
     const stringifiedArray = JSON.stringify(foodList)
     console.log("onItemTouch: stringifiedArray ", stringifiedArray)
 
     storeData(key, stringifiedArray)
-    alert("You chose this item")
+    alert("You chose"+value)
   }
   
 

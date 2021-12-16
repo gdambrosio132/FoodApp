@@ -1,5 +1,3 @@
-import React from 'react'
-
 const filterItems = ({predictions, threshold}) => {
     var filteredPredictions = predictions.filter(item => item.value >= threshold)
     filteredPredictions = filteredPredictions.map((item) => {
