@@ -9,10 +9,10 @@ import { useState } from 'react';
 import Button from '../components/Button';
 import { RootStackScreenProps, RootTabScreenProps } from '../types';
 import CalculateCalories from '../components/CalculateCalories';
-
+import History from '../components/History';
 export default function ModalScreen({ navigation }: RootStackScreenProps<'Modal'>) {
 
-  const [storedFoods, setStoredFoods] = useState([])
+  const [storedFoods, setStoredFoods] = useState<null|any>([])
   const [total, setTotal] = useState(0)
   useEffect(() => {
     const getAll = async () => 
@@ -33,17 +33,13 @@ export default function ModalScreen({ navigation }: RootStackScreenProps<'Modal'
 
   const deleteData = () => {
     AsyncStorage.removeItem("food");
+    setStoredFoods(null);
   }
 
   return (
     <View style={styles.predictionWrapper}>
       <Button style = {styles.button} text={'Clear List'} onClick={deleteData}></Button>
-      
-      {storedFoods!=null ? storedFoods.map((item) => (
-          <Text key={item.id} style={styles.container}>
-                  {item.name}: {item.calorie}
-          </Text>
-        )) : <Text style={styles.container}>Nothing Stored Yet</Text> }
+      <History storedFoods={storedFoods}></History>
       {storedFoods!=null ? <Text style={styles.total}>Total Calories: {CalculateCalories({items:storedFoods})}</Text> : <Text style={styles.total}>Total Calories:</Text>}
 
 

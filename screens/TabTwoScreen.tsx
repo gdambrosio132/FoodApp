@@ -58,8 +58,11 @@ export default function TabTwoScreen() {
 
           {openCamera ?
             <View style={styles.container}>
-              {imageURI ? 
-                <Image style = {{flex:1}} source = {{uri:imageURI}}/> 
+              <ScrollView
+                style={styles.container}
+                contentContainerStyle={styles.contentContainer}>
+                              {imageURI ? 
+                <Image style = {styles.camera} source = {{uri:imageURI}}/> 
                 :
                   <Camera
                   ref = {ref => setCamera(ref)} 
@@ -96,6 +99,8 @@ export default function TabTwoScreen() {
                     </View>
                   </Camera> }
                   {imageBase64 ? <ClarifaiView imageResponse = {imageBase64}/> : <View></View>}
+              </ScrollView>
+
             </View>
             
             :
@@ -120,7 +125,8 @@ const styles = StyleSheet.create({
     height: '100%',
   },
   camera: {
-    flex: 1,
+    width: 300,
+    height: 300,
   },
   buttonContainer: {
     flex: 1,
@@ -136,6 +142,9 @@ const styles = StyleSheet.create({
   },
   contentContainer: {
     paddingTop: 30,
+    alignItems: 'center',
+    alignContent: 'center'
+
   },
   headerText: {
     marginTop: 5,

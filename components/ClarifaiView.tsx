@@ -7,13 +7,13 @@ import * as KEYS from '../constants/APIKeys';
 import filterItems from './filterItems';
 import { GetRequest } from './FoodAPI';
 import { componentDidMount} from './Models/FoodAPIExtended'
-
+import { LogBox } from "react-native";
 
 //import { CLARIFAI_API_KEY } from '@env';
 const ClarifaiView = ({ imageResponse }: { imageResponse: string | undefined }) => {
   const [predictions, setPredictions] = useState(null);
 
-
+  LogBox.ignoreAllLogs();
   const clarifaiApp = new Clarifai.App({
     apiKey: KEYS.CLARIFAI_APP_KEY /*CLARIFAI_API_KEY*/,
   });
