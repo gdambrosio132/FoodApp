@@ -82,7 +82,7 @@ const ClarifaiView = ({ imageResponse }: { imageResponse: string | undefined }) 
     console.log("onItemTouch: stringifiedArray ", stringifiedArray)
 
     storeData(key, stringifiedArray)
-    alert("You chose"+value)
+    alert("You chose "+value)
   }
   
 
